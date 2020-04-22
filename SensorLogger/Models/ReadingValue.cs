@@ -9,7 +9,7 @@ namespace SensorLogger.Models
 {
     public class ReadingValue
     {
-        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ReadingValueID { get; set; }
         [DisplayFormat(NullDisplayText = "")]
         public float Value { get; set; }

@@ -28,30 +28,30 @@
         <dd class="col-sm-10">
             <table class="table">
                 <tr>
-                    <th>Date and time</th>
+                    <th>Date and time</th>pppppppppppppppppppp
                     <th>Values</th>
                 </tr>
                 @foreach (var _reading in Model.Readings)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(model => _reading.Date_time)
-                        </td>
-                        <td>
-                            @foreach (var _readingvalue in _reading.ReadingValues)
-                            {
-                                @Html.DisplayFor(model => _readingvalue.Value)
-                                <text> </text>
-                                @Html.DisplayFor(model => _readingvalue.ValueType)
-                                <br />
-                            }
-                        </td>
-                    </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => _reading.Date_time)
+                </td>
+                <td>
+                    @foreach (var _readingvalue in _reading.ReadingValues)
+                    {
+                        @Html.DisplayFor(model => _readingvalue.Value)
+                        <text> </text>
+                        @Html.DisplayFor(model => _readingvalue.ValueType)
+                        <br/>
+                    }
+                </td>
+            </tr>
                 }
             </table>
         </dd>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.MicrocontrollerID">Edit name</a> |
+    <a asp-action="Edit" asp-route-id="@Model.MicrocontrollerID">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

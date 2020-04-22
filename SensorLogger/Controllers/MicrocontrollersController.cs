@@ -12,9 +12,9 @@ namespace SensorLogger.Views.Microcontrollers
 {
     public class MicrocontrollersController : Controller
     {
-        private readonly SensorLoggerContext _context;
+        private readonly Data.SensorLoggerContext _context;
 
-        public MicrocontrollersController(SensorLoggerContext context)
+        public MicrocontrollersController(Data.SensorLoggerContext context)
         {
             _context = context;
         }

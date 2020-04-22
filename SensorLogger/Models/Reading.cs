@@ -9,8 +9,7 @@ namespace SensorLogger.Models
 {
     public class Reading
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ReadingID { get; set; }
         [DisplayFormat(NullDisplayText = "No update")]
         public DateTime Date_time { get; set; }
