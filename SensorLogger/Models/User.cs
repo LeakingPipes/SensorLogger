@@ -8,14 +8,16 @@ namespace SensorLogger.Models
 {
     public class User
     {
-        [Key]
-        public int UserID { get; set; }
-        public string UserName { get; set; }
+        //[Key]
+        public int Id { get; set; }
+        public string Name { get; set; }
 
-        [Required]
-        [DataType(DataType.Password)]
+        //[Required]
+        //[DataType(DataType.Password)]
         public string Password { get; set; }
 
-        public virtual ICollection<Microcontroller> Microcontrollers { get; set; }
+        public string Role { get; set; }
+
+        //public virtual ICollection<Microcontroller> Microcontrollers { get; set; }
     }
 }
