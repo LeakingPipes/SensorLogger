@@ -1,20 +1,19 @@
-﻿@model SensorLogger.Models.LoginModel
+﻿@model SensorLogger.Models.CreateNewAccountModel
 
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Create New Account";
 }
 
-<h1>Login</h1>
+<h1>Create New Account</h1>
 
 <div class="row">
     <div class="col-sm-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Please enter your credentials</h3>
+                <h3 class="panel-title">Please enter your account information</h3>
             </div>
             <div class="panel-body">
-                <form asp-route="Login">
-                    <input type="hidden" asp-for="ReturnUrl" />
+                <form asp-route="CreateNewAccount">
                     <fieldset>
                         <div class="form-group">
                             <label asp-for="Username"></label>
@@ -24,17 +23,8 @@
                             <label asp-for="Password"></label>
                             <input type="password" class="form-control" placeholder="Password" asp-for="Password" autocomplete="off">
                         </div>
-                        <div class="form-group login-remember">
-                            <label asp-for="RememberLogin">
-                                <input asp-for="RememberLogin">
-                                <strong>Remember Me</strong>
-                            </label>
-                        </div>
                         <div class="form-group">
-                            <a asp-controller="Account" asp-action="CreateNewAccount" class="">Create an account</a>
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-primary">Login</button>
+                            <button class="btn btn-primary">Create</button>
                         </div>
                     </fieldset>
                 </form>

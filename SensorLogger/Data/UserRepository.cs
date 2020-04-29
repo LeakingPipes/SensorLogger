@@ -1,19 +1,31 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SensorLogger.Models;
 
 namespace SensorLogger.Data
 {
     public class UserRepository : IUserRepository
     {
-        private List<User> users = new List<User>
-        {
-            new User { Id = 1, Name = "Mads", Password = "i23", Role = "Admin" }
-        };
+        private readonly SensorLoggerContext _context;
 
-        public User GetByUsernameAndPassword(string username, string password)
+        public UserRepository(SensorLoggerContext context)
         {
-            var user = users.SingleOrDefault(u => u.Name == username && u.Password == password);
+            _context = context;
+        }
+
+        public async Task<User> GetByUsernameAndPasswordAsync(string username, string password)
+        {
+            List<User> users = await _context.Users.AsNoTracking().ToListAsync();
+            User user = users.SingleOrDefault(u => u.Name == username && u.Password == password);
+            return user;
+        }
+
+        public async Task<User> AddNewUserAsync(string username, string password)
+        {
+            List<User> users = await _context.Users.AsNoTracking().ToListAsync();
+            User user = users.SingleOrDefault(u => u.Name == username && u.Password == password);
             return user;
         }
     }

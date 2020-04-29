@@ -8,12 +8,12 @@ namespace SensorLogger.Models
 {
     public class User
     {
-        //[Key]
+        [Key]
         public int Id { get; set; }
         public string Name { get; set; }
 
-        //[Required]
-        //[DataType(DataType.Password)]
+        [Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
         public string Role { get; set; }

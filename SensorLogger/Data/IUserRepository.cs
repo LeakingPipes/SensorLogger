@@ -1,9 +1,11 @@
 ﻿using SensorLogger.Models;
+using System.Threading.Tasks;
 
 namespace SensorLogger.Data
 {
     public interface IUserRepository
     {
-        User GetByUsernameAndPassword(string username, string password);
+        Task<User> GetByUsernameAndPasswordAsync(string username, string password);
+        Task<User> AddNewUserAsync(string username, string password);
     }
 }

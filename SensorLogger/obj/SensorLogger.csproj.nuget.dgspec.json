@@ -1,23 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\madsb\\Documents\\GitHub\\SensorLogger\\SensorLogger\\SensorLogger.csproj": {}
+    "C:\\Users\\Mads\\Documents\\GitHub\\SensorLogger\\SensorLogger\\SensorLogger.csproj": {}
   },
   "projects": {
-    "C:\\Users\\madsb\\Documents\\GitHub\\SensorLogger\\SensorLogger\\SensorLogger.csproj": {
+    "C:\\Users\\Mads\\Documents\\GitHub\\SensorLogger\\SensorLogger\\SensorLogger.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\madsb\\Documents\\GitHub\\SensorLogger\\SensorLogger\\SensorLogger.csproj",
+        "projectUniqueName": "C:\\Users\\Mads\\Documents\\GitHub\\SensorLogger\\SensorLogger\\SensorLogger.csproj",
         "projectName": "SensorLogger",
-        "projectPath": "C:\\Users\\madsb\\Documents\\GitHub\\SensorLogger\\SensorLogger\\SensorLogger.csproj",
-        "packagesPath": "C:\\Users\\madsb\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\madsb\\Documents\\GitHub\\SensorLogger\\SensorLogger\\obj\\",
+        "projectPath": "C:\\Users\\Mads\\Documents\\GitHub\\SensorLogger\\SensorLogger\\SensorLogger.csproj",
+        "packagesPath": "C:\\Users\\Mads\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Mads\\Documents\\GitHub\\SensorLogger\\SensorLogger\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "D:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\madsb\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Mads\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -74,7 +75,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -22,6 +22,20 @@ namespace SensorLogger.Controllers
         }
 
         [AllowAnonymous]
+        public IActionResult CreateNewAccount()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult CreateNewAccount(CreateNewAccountModel model)
+        {
+            userRepository.AddNewUserAsync(model.Username, model.Password);
+            return Redirect("/");
+        }
+
+        [AllowAnonymous]
         public IActionResult Login(string returnUrl = "/")
         {
             return View(new LoginModel { ReturnUrl = returnUrl });
@@ -31,7 +45,7 @@ namespace SensorLogger.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginModel model)
         {
-            User user = userRepository.GetByUsernameAndPassword(model.Username, model.Password);
+            User user = await userRepository.GetByUsernameAndPasswordAsync(model.Username, model.Password);
             if (user == null)
                 return Unauthorized();
 

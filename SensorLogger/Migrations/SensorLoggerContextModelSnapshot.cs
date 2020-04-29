@@ -34,7 +34,9 @@ namespace SensorLogger.Migrations
 
             modelBuilder.Entity("SensorLogger.Models.Reading", b =>
                 {
-                    b.Property<int>("ReadingID");
+                    b.Property<int>("ReadingID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("Date_time");
 
@@ -49,7 +51,9 @@ namespace SensorLogger.Migrations
 
             modelBuilder.Entity("SensorLogger.Models.ReadingValue", b =>
                 {
-                    b.Property<int>("ReadingValueID");
+                    b.Property<int>("ReadingValueID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ReadingID");
 
@@ -62,6 +66,24 @@ namespace SensorLogger.Migrations
                     b.HasIndex("ReadingID");
 
                     b.ToTable("ReadingValue");
+                });
+
+            modelBuilder.Entity("SensorLogger.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Password")
+                        .IsRequired();
+
+                    b.Property<string>("Role");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("SensorLogger.Models.Reading", b =>

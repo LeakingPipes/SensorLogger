@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SensorLogger.Migrations
 {
-    public partial class First : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -22,10 +22,26 @@ namespace SensorLogger.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: false),
+                    Role = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Reading",
                 columns: table => new
                 {
-                    ReadingID = table.Column<int>(nullable: false),
+                    ReadingID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Date_time = table.Column<DateTime>(nullable: false),
                     MicrocontrollerID = table.Column<int>(nullable: false)
                 },
@@ -44,7 +60,8 @@ namespace SensorLogger.Migrations
                 name: "ReadingValue",
                 columns: table => new
                 {
-                    ReadingValueID = table.Column<int>(nullable: false),
+                    ReadingValueID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Value = table.Column<float>(nullable: false),
                     ValueType = table.Column<string>(nullable: true),
                     ReadingID = table.Column<int>(nullable: false)
@@ -75,6 +92,9 @@ namespace SensorLogger.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ReadingValue");
+
+            migrationBuilder.DropTable(
+                name: "User");
 
             migrationBuilder.DropTable(
                 name: "Reading");
