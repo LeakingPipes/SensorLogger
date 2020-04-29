@@ -24,8 +24,10 @@ namespace SensorLogger.Data
 
         public async Task<User> AddNewUserAsync(string username, string password)
         {
-            List<User> users = await _context.Users.AsNoTracking().ToListAsync();
-            User user = users.SingleOrDefault(u => u.Name == username && u.Password == password);
+            User user = new User {Name = username, Password = password, Role = "User" };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
             return user;
         }
     }

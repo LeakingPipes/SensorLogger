@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SensorLogger.Data;
 using SensorLogger.Models;
 using System;
@@ -14,11 +15,11 @@ namespace SensorLogger.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IUserRepository userRepository;
+        private readonly SensorLoggerContext _context;
 
-        public AccountController(IUserRepository userRepository)
+        public AccountController(SensorLoggerContext context)
         {
-            this.userRepository = userRepository;
+            _context = context;
         }
 
         [AllowAnonymous]
@@ -29,11 +30,23 @@ namespace SensorLogger.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult CreateNewAccount(CreateNewAccountModel model)
+        public async Task<IActionResult> CreateNewAccount(CreateNewAccountModel model)
         {
-            userRepository.AddNewUserAsync(model.Username, model.Password);
-            return Redirect("/");
+            User user = new User { Name = model.Username, Password = model.Password, Role = "User" };
+
+            _context.Add(user);
+            await _context.SaveChangesAsync();
+
+            //userRepository.AddNewUserAsync(model.Username, model.Password);
+            return Redirect("/Account/AccountCreated");
         }
+
+        [AllowAnonymous]
+        public IActionResult AccountCreated()
+        {
+            return View();
+        }
+
 
         [AllowAnonymous]
         public IActionResult Login(string returnUrl = "/")
@@ -45,7 +58,9 @@ namespace SensorLogger.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginModel model)
         {
-            User user = await userRepository.GetByUsernameAndPasswordAsync(model.Username, model.Password);
+            List<User> users = await _context.Users.AsNoTracking().ToListAsync();
+            User user = users.SingleOrDefault(u => u.Name == model.Username && u.Password == model.Password);
+
             if (user == null)
                 return Unauthorized();
 

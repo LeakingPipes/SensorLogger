@@ -78,3 +78,4 @@ C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2
 C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\TestMicrocontrollers\Index.g.cshtml.cs
 C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Account\Login.g.cshtml.cs
 C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Account\CreateNewAccount.g.cshtml.cs
+C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Account\AccountCreated.g.cshtml.cs
