@@ -13,9 +13,9 @@ namespace SensorLogger.Models
         public int MicrocontrollerID { get; set; }
         public string MicrocontrollerName { get; set; }
 
-        //[ForeignKey("UserID")]
-        //public int UserID { get; set; }
-        //public virtual User User { get; set; }
+        [ForeignKey("UserID")]
+        public int UserID { get; set; }
+        public virtual User User { get; set; }
 
         public virtual ICollection<Reading> Readings { get; set; }
     }

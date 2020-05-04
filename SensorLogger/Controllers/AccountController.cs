@@ -10,17 +10,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace SensorLogger.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly SensorLoggerContext _context;
+        private readonly IHashData hashData;
 
-        public AccountController(SensorLoggerContext context)
+        private readonly SensorLoggerContext context;
+
+        public AccountController(SensorLoggerContext context, IHashData hashData)
         {
-            _context = context;
+            this.context = context;
+            this.hashData = hashData;
         }
+
 
         [AllowAnonymous]
         public IActionResult CreateNewAccount()
@@ -32,13 +37,26 @@ namespace SensorLogger.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> CreateNewAccount(CreateNewAccountModel model)
         {
-            User user = new User { Name = model.Username, Password = model.Password, Role = "User" };
+            List<User> users = await context.Users.AsNoTracking().ToListAsync();
+            User database_user = users.SingleOrDefault(u => u.Name == model.Username);
 
-            _context.Add(user);
-            await _context.SaveChangesAsync();
+            if(database_user == null)
+            {
+                string _password = hashData.ComputeHashSha512(model.Password, model.Username);
 
-            //userRepository.AddNewUserAsync(model.Username, model.Password);
-            return Redirect("/Account/AccountCreated");
+                User user = new User { Name = model.Username, Password = _password, Role = "User" };
+
+                context.Add(user);
+                await context.SaveChangesAsync();
+                return View(model);
+            }
+            else
+            {
+                model.Error = "The username you entered is already in use!";
+
+                return View(model);
+                //return Redirect("/Account/AccountCreated");
+            }
         }
 
         [AllowAnonymous]
@@ -58,7 +76,9 @@ namespace SensorLogger.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginModel model)
         {
-            List<User> users = await _context.Users.AsNoTracking().ToListAsync();
+            model.Password = hashData.ComputeHashSha512(model.Password, model.Username);
+
+            List<User> users = await context.Users.AsNoTracking().ToListAsync();
             User user = users.SingleOrDefault(u => u.Name == model.Username && u.Password == model.Password);
 
             if (user == null)
@@ -66,7 +86,7 @@ namespace SensorLogger.Controllers
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
                 new Claim(ClaimTypes.Name, user.Name),
                 new Claim(ClaimTypes.Role, user.Role)
             };

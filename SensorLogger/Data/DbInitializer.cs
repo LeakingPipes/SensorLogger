@@ -25,7 +25,7 @@ namespace SensorLogger.Data
             {
                 context.Microcontrollers.Add(s);
             }
-            context.SaveChanges();
+            //context.SaveChanges();
 
             var readings = new Reading[]
             {
@@ -39,7 +39,7 @@ namespace SensorLogger.Data
             {
                 context.Readings.Add(c);
             }
-            context.SaveChanges();
+            //context.SaveChanges();
 
             var readingValues = new ReadingValue[]
             {
@@ -58,7 +58,7 @@ namespace SensorLogger.Data
             {
                 context.ReadingValues.Add(e);
             }
-            context.SaveChanges();
+            //context.SaveChanges();
         }
     }
 }

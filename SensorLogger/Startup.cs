@@ -39,7 +39,7 @@ namespace SensorLogger
             services.AddDbContext<SensorLoggerContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IHashData, HashData>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();

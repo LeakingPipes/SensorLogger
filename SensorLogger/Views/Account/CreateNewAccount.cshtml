@@ -5,30 +5,63 @@
 }
 
 
-<h1>Create New Account</h1>
-<div class="row">
-    <div class="col-sm-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Please enter your account information</h3>
-            </div>
-            <div class="panel-body">
-                <form asp-route="CreateNewAccount">
-                    <fieldset>
-                        <div class="form-group">
-                            <label asp-for="Username"></label>
-                            <input class="form-control" placeholder="Username" asp-for="Username" autofocus>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Password"></label>
-                            <input type="password" class="form-control" placeholder="Password" asp-for="Password" autocomplete="off">
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-primary">Create</button>
-                        </div>
-                    </fieldset>
-                </form>
+@if (Model == null)
+{
+    <h1>Create New Account</h1>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Please enter your account information</h3>
+                </div>
+                <div class="panel-body">
+                    <form asp-route="CreateNewAccount">
+                        <fieldset>
+                            <div class="form-group">
+                                <label asp-for="Username"></label>
+                                <input class="form-control" placeholder="Username" asp-for="Username" autofocus>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Password"></label>
+                                <input type="password" class="form-control" placeholder="Password" asp-for="Password" autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary">Create</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
+}
+else if (Model.Error != "")
+{
+    <h1>Account was not created</h1>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">@Model.Error</h3>
+                </div>
+                <div class="panel-body">
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <h1>Account was not created</h1>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Unknown error!</h3>
+                </div>
+                <div class="panel-body">
+                </div>
+            </div>
+        </div>
+    </div>
+}

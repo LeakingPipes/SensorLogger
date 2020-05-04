@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SensorLogger.Data;
 using SensorLogger.Models;
+using System.Security.Claims;
 
 namespace SensorLogger.Views.Microcontrollers
 {
@@ -68,6 +69,10 @@ namespace SensorLogger.Views.Microcontrollers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MicrocontrollerID,MicrocontrollerName")] Microcontroller microcontroller)
         {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            microcontroller.UserID = 1;
+
             if (ModelState.IsValid)
             {
                 _context.Add(microcontroller);
