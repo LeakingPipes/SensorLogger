@@ -79,3 +79,8 @@ C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2
 C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Account\Login.g.cshtml.cs
 C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Account\CreateNewAccount.g.cshtml.cs
 C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Account\AccountCreated.g.cshtml.cs
+C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Users\Create.g.cshtml.cs
+C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Users\Delete.g.cshtml.cs
+C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Users\Details.g.cshtml.cs
+C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Users\Edit.g.cshtml.cs
+C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Users\Index.g.cshtml.cs

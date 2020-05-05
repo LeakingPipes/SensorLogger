@@ -26,7 +26,6 @@ namespace SensorLogger.Controllers
             this.hashData = hashData;
         }
 
-
         [AllowAnonymous]
         public IActionResult CreateNewAccount()
         {
@@ -44,7 +43,7 @@ namespace SensorLogger.Controllers
             {
                 string _password = hashData.ComputeHashSha512(model.Password, model.Username);
 
-                User user = new User { Name = model.Username, Password = _password, Role = "User" };
+                User user = new User { Name = model.Username, Password = _password, Role = Role.Admin };
 
                 context.Add(user);
                 await context.SaveChangesAsync();
@@ -88,7 +87,7 @@ namespace SensorLogger.Controllers
             {
                 new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
                 new Claim(ClaimTypes.Name, user.Name),
-                new Claim(ClaimTypes.Role, user.Role)
+                new Claim(ClaimTypes.Role, user.Role.ToString())
             };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

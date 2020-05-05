@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace SensorLogger.Models
 {
+    public enum Role
+    {
+        Admin, User
+    }
+
     public class User
     {
         [Key]
@@ -14,7 +19,7 @@ namespace SensorLogger.Models
 
         public string Password { get; set; }
 
-        public string Role { get; set; }
+        public Role? Role { get; set; }
 
         public virtual ICollection<Microcontroller> Microcontrollers { get; set; }
     }
