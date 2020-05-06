@@ -8,24 +8,25 @@ using Microsoft.EntityFrameworkCore;
 using SensorLogger.Data;
 using SensorLogger.Models;
 
-namespace SensorLogger.Views.Test
+namespace SensorLogger.Controllers
 {
-    public class TestMicrocontrollersController : Controller
+    public class TestMicrocontrollers1Controller : Controller
     {
         private readonly SensorLoggerContext _context;
 
-        public TestMicrocontrollersController(SensorLoggerContext context)
+        public TestMicrocontrollers1Controller(SensorLoggerContext context)
         {
             _context = context;
         }
 
-        // GET: TestMicrocontrollers
+        // GET: TestMicrocontrollers1
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Microcontrollers.ToListAsync());
+            var sensorLoggerContext = _context.Microcontrollers.Include(m => m.User);
+            return View(await sensorLoggerContext.ToListAsync());
         }
 
-        // GET: TestMicrocontrollers/Details/5
+        // GET: TestMicrocontrollers1/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,6 +35,7 @@ namespace SensorLogger.Views.Test
             }
 
             var microcontroller = await _context.Microcontrollers
+                .Include(m => m.User)
                 .FirstOrDefaultAsync(m => m.MicrocontrollerID == id);
             if (microcontroller == null)
             {
@@ -43,18 +45,19 @@ namespace SensorLogger.Views.Test
             return View(microcontroller);
         }
 
-        // GET: TestMicrocontrollers/Create
+        // GET: TestMicrocontrollers1/Create
         public IActionResult Create()
         {
+            ViewData["UserID"] = new SelectList(_context.Users, "UserID", "UserID");
             return View();
         }
 
-        // POST: TestMicrocontrollers/Create
+        // POST: TestMicrocontrollers1/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MicrocontrollerID,MicrocontrollerName")] Microcontroller microcontroller)
+        public async Task<IActionResult> Create([Bind("MicrocontrollerID,MicrocontrollerName,isPrivate,UserID")] Microcontroller microcontroller)
         {
             if (ModelState.IsValid)
             {
@@ -62,10 +65,11 @@ namespace SensorLogger.Views.Test
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["UserID"] = new SelectList(_context.Users, "UserID", "UserID", microcontroller.UserID);
             return View(microcontroller);
         }
 
-        // GET: TestMicrocontrollers/Edit/5
+        // GET: TestMicrocontrollers1/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,15 +82,16 @@ namespace SensorLogger.Views.Test
             {
                 return NotFound();
             }
+            ViewData["UserID"] = new SelectList(_context.Users, "UserID", "UserID", microcontroller.UserID);
             return View(microcontroller);
         }
 
-        // POST: TestMicrocontrollers/Edit/5
+        // POST: TestMicrocontrollers1/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MicrocontrollerID,MicrocontrollerName")] Microcontroller microcontroller)
+        public async Task<IActionResult> Edit(int id, [Bind("MicrocontrollerID,MicrocontrollerName,isPrivate,UserID")] Microcontroller microcontroller)
         {
             if (id != microcontroller.MicrocontrollerID)
             {
@@ -113,10 +118,11 @@ namespace SensorLogger.Views.Test
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["UserID"] = new SelectList(_context.Users, "UserID", "UserID", microcontroller.UserID);
             return View(microcontroller);
         }
 
-        // GET: TestMicrocontrollers/Delete/5
+        // GET: TestMicrocontrollers1/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,6 +131,7 @@ namespace SensorLogger.Views.Test
             }
 
             var microcontroller = await _context.Microcontrollers
+                .Include(m => m.User)
                 .FirstOrDefaultAsync(m => m.MicrocontrollerID == id);
             if (microcontroller == null)
             {
@@ -134,7 +141,7 @@ namespace SensorLogger.Views.Test
             return View(microcontroller);
         }
 
-        // POST: TestMicrocontrollers/Delete/5
+        // POST: TestMicrocontrollers1/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

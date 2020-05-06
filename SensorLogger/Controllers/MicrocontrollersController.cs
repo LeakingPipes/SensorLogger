@@ -28,7 +28,22 @@ namespace SensorLogger.Views.Microcontrollers
                 .ThenInclude(e => e.ReadingValues)
             .AsNoTracking().ToListAsync();
 
-            return View(microcontrollers);
+            int userid = Convert.ToInt32(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            List<Microcontroller> _m = new List<Microcontroller>();
+
+            foreach (Microcontroller _microcontroller in microcontrollers)
+            {
+                if (_microcontroller.isPrivate && userid != _microcontroller.UserID)
+                {
+                }
+                else
+                {
+                    _m.Add(_microcontroller);
+                }
+            }
+
+            return View(_m);
         }
 
         // GET: Microcontrollers/Details/5
@@ -103,7 +118,7 @@ namespace SensorLogger.Views.Microcontrollers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MicrocontrollerID,MicrocontrollerName")] Microcontroller microcontroller)
+        public async Task<IActionResult> Edit(int id, [Bind("MicrocontrollerID,MicrocontrollerName,isPrivate,UserID")] Microcontroller microcontroller)
         {
             if (id != microcontroller.MicrocontrollerID)
             {
@@ -130,6 +145,7 @@ namespace SensorLogger.Views.Microcontrollers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["UserID"] = new SelectList(_context.Users, "UserID", "UserID", microcontroller.UserID);
             return View(microcontroller);
         }
 

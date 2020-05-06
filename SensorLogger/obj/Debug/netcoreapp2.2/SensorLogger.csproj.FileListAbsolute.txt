@@ -71,11 +71,6 @@ C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2
 C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\SensorLogger.dll
 C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\SensorLogger.pdb
 C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\SensorLogger.csproj.CopyComplete
-C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\TestMicrocontrollers\Create.g.cshtml.cs
-C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\TestMicrocontrollers\Delete.g.cshtml.cs
-C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\TestMicrocontrollers\Details.g.cshtml.cs
-C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\TestMicrocontrollers\Edit.g.cshtml.cs
-C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\TestMicrocontrollers\Index.g.cshtml.cs
 C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Account\Login.g.cshtml.cs
 C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Account\CreateNewAccount.g.cshtml.cs
 C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Account\AccountCreated.g.cshtml.cs
@@ -84,3 +79,8 @@ C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2
 C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Users\Details.g.cshtml.cs
 C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Users\Edit.g.cshtml.cs
 C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Users\Index.g.cshtml.cs
+C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\TestMicrocontrollers1\Create.g.cshtml.cs
+C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\TestMicrocontrollers1\Delete.g.cshtml.cs
+C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\TestMicrocontrollers1\Details.g.cshtml.cs
+C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\TestMicrocontrollers1\Edit.g.cshtml.cs
+C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\TestMicrocontrollers1\Index.g.cshtml.cs
