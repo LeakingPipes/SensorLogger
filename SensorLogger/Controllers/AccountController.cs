@@ -51,10 +51,9 @@ namespace SensorLogger.Controllers
             }
             else
             {
-                model.Error = "The username you entered is already in use!";
+                model.ErrorMessage = "This username has already been taken!";
 
                 return View(model);
-                //return Redirect("/Account/AccountCreated");
             }
         }
 
@@ -81,7 +80,11 @@ namespace SensorLogger.Controllers
             User user = users.SingleOrDefault(u => u.Name == model.Username && u.Password == model.Password);
 
             if (user == null)
-                return Unauthorized();
+            {
+                model.ErrorMessage = "Wrong name or password!";
+
+                return View(model);
+            }
 
             var claims = new List<Claim>
             {

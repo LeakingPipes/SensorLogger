@@ -24,26 +24,24 @@ namespace SensorLogger.Views.Microcontrollers
         public async Task<IActionResult> Index()
         {
             var microcontrollers = await _context.Microcontrollers
+                .Include(r => r.User)
             .Include(s => s.Readings)
                 .ThenInclude(e => e.ReadingValues)
             .AsNoTracking().ToListAsync();
 
             int userid = Convert.ToInt32(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-            List<Microcontroller> _m = new List<Microcontroller>();
+            List<Microcontroller> tempMicrocontroller = new List<Microcontroller>();
 
             foreach (Microcontroller _microcontroller in microcontrollers)
             {
-                if (_microcontroller.isPrivate && userid != _microcontroller.UserID)
+                if (!_microcontroller.isPrivate || userid == _microcontroller.UserID)
                 {
-                }
-                else
-                {
-                    _m.Add(_microcontroller);
+                    tempMicrocontroller.Add(_microcontroller);
                 }
             }
 
-            return View(_m);
+            return View(tempMicrocontroller);
         }
 
         // GET: Microcontrollers/Details/5
@@ -84,9 +82,9 @@ namespace SensorLogger.Views.Microcontrollers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MicrocontrollerID,MicrocontrollerName")] Microcontroller microcontroller)
         {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int userid = Convert.ToInt32(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-            microcontroller.UserID = 1;
+            microcontroller.UserID = userid;
 
             if (ModelState.IsValid)
             {
@@ -106,10 +104,20 @@ namespace SensorLogger.Views.Microcontrollers
             }
 
             var microcontroller = await _context.Microcontrollers.FindAsync(id);
+
+            string role = this.User.FindFirstValue(ClaimTypes.Role);
+            int userid = Convert.ToInt32(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            if (role != Role.Admin.ToString() && userid != microcontroller.UserID)
+            {
+                return Unauthorized();
+            }
+
             if (microcontroller == null)
             {
                 return NotFound();
             }
+            ViewData["UserID"] = new SelectList(_context.Users, "UserID", "Name", microcontroller.UserID);
             return View(microcontroller);
         }
 
@@ -145,7 +153,7 @@ namespace SensorLogger.Views.Microcontrollers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserID"] = new SelectList(_context.Users, "UserID", "UserID", microcontroller.UserID);
+            ViewData["UserID"] = new SelectList(_context.Users, "UserID", "Name", microcontroller.UserID);
             return View(microcontroller);
         }
 

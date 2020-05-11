@@ -16,10 +16,14 @@
                 @Html.DisplayNameFor(model => model.MicrocontrollerName)
             </th>
             <th>
+                <text>Owner</text>
+            </th>
+            <th>
                 <text>Last update</text>
             </th>
             <th>
-                <text></text>
+            </th>
+            <th>
             </th>
         </tr>
     </thead>
@@ -30,6 +34,9 @@
                 <a asp-action="Details" asp-route-id="@item.MicrocontrollerID">
                     @Html.DisplayFor(modelItem => item.MicrocontrollerName)
                 </a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Name)
             </td>
             <td>
                 @if (item.Readings.Count != 0)

@@ -30,7 +30,9 @@ namespace SensorLogger.Controllers
             }
             else
             {
-                return Unauthorized();
+                return View("Unauthorized");
+                //return Redirect("/Unauthorized");
+                //return Unauthorized();
             }
         }
 
