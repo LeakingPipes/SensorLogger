@@ -13,15 +13,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.MicrocontrollerName)
+                @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm })
             </th>
             <th>
                 <text>Owner</text>
             </th>
             <th>
-                <text>Last update</text>
+                <text>Private</text>
             </th>
             <th>
+                @Html.ActionLink("Last update", "Index", new { sortOrder = ViewBag.DateSortParm })
+            </th>
+            <th>
+                <text>Values</text>
             </th>
             <th>
             </th>
@@ -37,6 +41,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.User.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.isPrivate)
             </td>
             <td>
                 @if (item.Readings.Count != 0)

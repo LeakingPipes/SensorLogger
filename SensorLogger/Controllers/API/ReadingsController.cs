@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ using SensorLogger.Models;
 
 namespace SensorLogger.Controllers.API
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class ReadingsController : ControllerBase

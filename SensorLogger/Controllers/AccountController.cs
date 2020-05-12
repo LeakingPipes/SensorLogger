@@ -47,7 +47,7 @@ namespace SensorLogger.Controllers
 
                 context.Add(user);
                 await context.SaveChangesAsync();
-                return View(model);
+                return View("AccountCreated");
             }
             else
             {

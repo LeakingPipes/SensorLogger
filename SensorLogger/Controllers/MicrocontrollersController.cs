@@ -21,7 +21,7 @@ namespace SensorLogger.Views.Microcontrollers
         }
 
         // GET: Microcontrollers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
             var microcontrollers = await _context.Microcontrollers
                 .Include(r => r.User)
@@ -41,7 +41,31 @@ namespace SensorLogger.Views.Microcontrollers
                 }
             }
 
-            return View(tempMicrocontroller);
+
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+            var sort_microcontrollers = from s in tempMicrocontroller
+                           select s;
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    sort_microcontrollers = sort_microcontrollers.OrderByDescending(s => s.MicrocontrollerName);
+                    break;
+                case "Date":
+                    //sort_microcontrollers = sort_microcontrollers.OrderBy(s => s.Readings.Last<Reading>().Date_time);
+                    sort_microcontrollers = sort_microcontrollers.OrderBy(s => s.Readings.LastOrDefault<Reading>().Date_time);
+                    break;
+                case "date_desc":
+                    sort_microcontrollers = sort_microcontrollers.OrderByDescending(s => s.Readings.LastOrDefault<Reading>().Date_time);
+                    //sort_microcontrollers = sort_microcontrollers.OrderByDescending(s => s.Readings.LastOrDefault<Reading>().Date_time != null)
+                    //        .ThenByDescending(s => s.Readings.LastOrDefault<Reading>().Date_time != null ? s.Readings.LastOrDefault<Reading>(). : null);
+                    break;
+                default:
+                    sort_microcontrollers = sort_microcontrollers.OrderBy(s => s.MicrocontrollerName);
+                    break;
+            }
+
+            return View(sort_microcontrollers);
         }
 
         // GET: Microcontrollers/Details/5
@@ -105,6 +129,11 @@ namespace SensorLogger.Views.Microcontrollers
 
             var microcontroller = await _context.Microcontrollers.FindAsync(id);
 
+            if (microcontroller == null)
+            {
+                return NotFound();
+            }
+
             string role = this.User.FindFirstValue(ClaimTypes.Role);
             int userid = Convert.ToInt32(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
@@ -113,10 +142,6 @@ namespace SensorLogger.Views.Microcontrollers
                 return Unauthorized();
             }
 
-            if (microcontroller == null)
-            {
-                return NotFound();
-            }
             ViewData["UserID"] = new SelectList(_context.Users, "UserID", "Name", microcontroller.UserID);
             return View(microcontroller);
         }
@@ -167,9 +192,18 @@ namespace SensorLogger.Views.Microcontrollers
 
             var microcontroller = await _context.Microcontrollers
                 .FirstOrDefaultAsync(m => m.MicrocontrollerID == id);
+
             if (microcontroller == null)
             {
                 return NotFound();
+            }
+
+            string role = this.User.FindFirstValue(ClaimTypes.Role);
+            int userid = Convert.ToInt32(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            if (role != Role.Admin.ToString() && userid != microcontroller.UserID)
+            {
+                return Unauthorized();
             }
 
             return View(microcontroller);
@@ -182,6 +216,15 @@ namespace SensorLogger.Views.Microcontrollers
         {
             var microcontroller = await _context.Microcontrollers.FindAsync(id);
             _context.Microcontrollers.Remove(microcontroller);
+
+            string role = this.User.FindFirstValue(ClaimTypes.Role);
+            int userid = Convert.ToInt32(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            if (role != Role.Admin.ToString() && userid != microcontroller.UserID)
+            {
+                return Unauthorized();
+            }
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
