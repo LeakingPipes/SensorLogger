@@ -16,16 +16,16 @@
                 @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm })
             </th>
             <th>
-                <text>Owner</text>
+                @Html.ActionLink("Owner", "Index", new { sortOrder = ViewBag.OwnerSortParm })
             </th>
             <th>
-                <text>Private</text>
+                @Html.ActionLink("Private", "Index", new { sortOrder = ViewBag.PrivateSortParm })
             </th>
             <th>
                 @Html.ActionLink("Last update", "Index", new { sortOrder = ViewBag.DateSortParm })
             </th>
             <th>
-                <text>Values</text>
+                <text>Last recorded values</text>
             </th>
             <th>
             </th>

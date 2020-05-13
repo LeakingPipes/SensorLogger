@@ -40,26 +40,45 @@ namespace SensorLogger.Views.Microcontrollers
                     tempMicrocontroller.Add(_microcontroller);
                 }
             }
-
+            
 
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.OwnerSortParm = sortOrder == "Owner" ? "owner_desc" : "Owner";
+            ViewBag.PrivateSortParm = sortOrder == "Private" ? "private_desc" : "Private";
             ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
-            var sort_microcontrollers = from s in tempMicrocontroller
+            
+            IEnumerable<Microcontroller> sort_microcontrollers = from s in tempMicrocontroller
                            select s;
             switch (sortOrder)
             {
                 case "name_desc":
                     sort_microcontrollers = sort_microcontrollers.OrderByDescending(s => s.MicrocontrollerName);
                     break;
+                case "Owner":
+                    sort_microcontrollers = sort_microcontrollers.OrderBy(s => s.User.Name);
+                    break;
+                case "owner_desc":
+                    sort_microcontrollers = sort_microcontrollers.OrderByDescending(s => s.User.Name);
+                    break;
+                case "Private":
+                    sort_microcontrollers = sort_microcontrollers.OrderBy(s => s.isPrivate);
+                    break;
+                case "private_desc":
+                    sort_microcontrollers = sort_microcontrollers.OrderByDescending(s => s.isPrivate);
+                    break;
                 case "Date":
                     //sort_microcontrollers = sort_microcontrollers.OrderBy(s => s.Readings.Last<Reading>().Date_time);
-                    sort_microcontrollers = sort_microcontrollers.OrderBy(s => s.Readings.LastOrDefault<Reading>().Date_time);
+                    sort_microcontrollers = sort_microcontrollers.OrderBy(s => s.Readings.Count == 0)
+                        .ThenBy(s => s.Readings.LastOrDefault<Reading>() == null)
+
+                        .ThenBy(s => s);
                     break;
                 case "date_desc":
-                    sort_microcontrollers = sort_microcontrollers.OrderByDescending(s => s.Readings.LastOrDefault<Reading>().Date_time);
+                    sort_microcontrollers = sort_microcontrollers.OrderByDescending(s => s.Readings != null);
                     //sort_microcontrollers = sort_microcontrollers.OrderByDescending(s => s.Readings.LastOrDefault<Reading>().Date_time != null)
                     //        .ThenByDescending(s => s.Readings.LastOrDefault<Reading>().Date_time != null ? s.Readings.LastOrDefault<Reading>(). : null);
                     break;
+
                 default:
                     sort_microcontrollers = sort_microcontrollers.OrderBy(s => s.MicrocontrollerName);
                     break;

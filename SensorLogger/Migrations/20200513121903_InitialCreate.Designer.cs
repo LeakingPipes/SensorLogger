@@ -10,7 +10,7 @@ using SensorLogger.Data;
 namespace SensorLogger.Migrations
 {
     [DbContext(typeof(SensorLoggerContext))]
-    [Migration("20200428082939_InitialCreate")]
+    [Migration("20200513121903_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,7 +29,13 @@ namespace SensorLogger.Migrations
 
                     b.Property<string>("MicrocontrollerName");
 
+                    b.Property<int>("UserID");
+
+                    b.Property<bool>("isPrivate");
+
                     b.HasKey("MicrocontrollerID");
+
+                    b.HasIndex("UserID");
 
                     b.ToTable("Microcontroller");
                 });
@@ -40,7 +46,7 @@ namespace SensorLogger.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Date_time");
+                    b.Property<DateTime?>("Date_time");
 
                     b.Property<int>("MicrocontrollerID");
 
@@ -72,20 +78,27 @@ namespace SensorLogger.Migrations
 
             modelBuilder.Entity("SensorLogger.Models.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UserID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("Password")
-                        .IsRequired();
+                    b.Property<string>("Password");
 
-                    b.Property<string>("Role");
+                    b.Property<int?>("Role");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserID");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("SensorLogger.Models.Microcontroller", b =>
+                {
+                    b.HasOne("SensorLogger.Models.User", "User")
+                        .WithMany("Microcontrollers")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SensorLogger.Models.Reading", b =>

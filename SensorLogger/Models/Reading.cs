@@ -12,7 +12,7 @@ namespace SensorLogger.Models
         [Key]
         public int ReadingID { get; set; }
         [DisplayFormat(NullDisplayText = "No update")]
-        public DateTime Date_time { get; set; }
+        public DateTime? Date_time { get; set; }
 
         [ForeignKey("MicrocontrollerID")]
         public int MicrocontrollerID { get; set; }
