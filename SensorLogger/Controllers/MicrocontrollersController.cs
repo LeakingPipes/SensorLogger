@@ -67,18 +67,45 @@ namespace SensorLogger.Views.Microcontrollers
                     sort_microcontrollers = sort_microcontrollers.OrderByDescending(s => s.isPrivate);
                     break;
                 case "Date":
-                    //sort_microcontrollers = sort_microcontrollers.OrderBy(s => s.Readings.Last<Reading>().Date_time);
-                    sort_microcontrollers = sort_microcontrollers.OrderBy(s => s.Readings.Count == 0)
-                        .ThenBy(s => s.Readings.LastOrDefault<Reading>() == null)
-
-                        .ThenBy(s => s);
+                    List<Microcontroller> _sort_microcontrollers1 = new List<Microcontroller>();
+                    List<Microcontroller> null_sort_microcontrollers1 = new List<Microcontroller>();
+                    foreach (Microcontroller microcontroller in sort_microcontrollers)
+                    {
+                        if(microcontroller.Readings.LastOrDefault<Reading>() != null)
+                        {
+                            _sort_microcontrollers1.Add(microcontroller);
+                        }
+                        else
+                        {
+                            null_sort_microcontrollers1.Add(microcontroller);
+                        }
+                    }
+                    sort_microcontrollers = _sort_microcontrollers1;
+                    sort_microcontrollers = sort_microcontrollers.OrderBy(s => s.Readings.LastOrDefault<Reading>().Date_time);
+                    _sort_microcontrollers1 = sort_microcontrollers.ToList();
+                    _sort_microcontrollers1.AddRange(null_sort_microcontrollers1);
+                    sort_microcontrollers = _sort_microcontrollers1;
                     break;
                 case "date_desc":
-                    sort_microcontrollers = sort_microcontrollers.OrderByDescending(s => s.Readings != null);
-                    //sort_microcontrollers = sort_microcontrollers.OrderByDescending(s => s.Readings.LastOrDefault<Reading>().Date_time != null)
-                    //        .ThenByDescending(s => s.Readings.LastOrDefault<Reading>().Date_time != null ? s.Readings.LastOrDefault<Reading>(). : null);
+                    List<Microcontroller> _sort_microcontrollers2 = new List<Microcontroller>();
+                    List<Microcontroller> null_sort_microcontrollers2 = new List<Microcontroller>();
+                    foreach (Microcontroller microcontroller in sort_microcontrollers)
+                    {
+                        if (microcontroller.Readings.LastOrDefault<Reading>() != null)
+                        {
+                            _sort_microcontrollers2.Add(microcontroller);
+                        }
+                        else
+                        {
+                            null_sort_microcontrollers2.Add(microcontroller);
+                        }
+                    }
+                    sort_microcontrollers = _sort_microcontrollers2;
+                    sort_microcontrollers = sort_microcontrollers.OrderByDescending(s => s.Readings.LastOrDefault<Reading>().Date_time);
+                    _sort_microcontrollers2 = sort_microcontrollers.ToList();
+                    _sort_microcontrollers2.AddRange(null_sort_microcontrollers2);
+                    sort_microcontrollers = _sort_microcontrollers2;
                     break;
-
                 default:
                     sort_microcontrollers = sort_microcontrollers.OrderBy(s => s.MicrocontrollerName);
                     break;
