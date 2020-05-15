@@ -136,6 +136,9 @@ namespace SensorLogger.Views.Microcontrollers
                 return NotFound();
             }
 
+
+
+
             return View(microcontroller);
         }
 

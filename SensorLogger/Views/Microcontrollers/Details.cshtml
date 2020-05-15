@@ -4,21 +4,77 @@
     ViewData["Title"] = "Details";
 }
 
-@{
-    var myChart = new Chart(width: 600, height: 400)
-        .AddTitle("Chart Title")
-        .AddSeries(
-            name: "Employee",
-            xValue: new[] { "Peter", "Andrew", "Julie", "Mary", "Dave" },
-            yValues: new[] { "2", "6", "4", "5", "3" })
-        .Write();
+@functions {
+
+    string getdata()
+    {
+        string output = "['Time'";
+        string outputreadingvalue = "['";
+        List<string> valueType = new List<string>();
+
+
+        foreach (Reading reading in Model.Readings)
+        {
+
+
+            foreach(ReadingValue readingValue in reading.ReadingValues)
+            {
+                valueType.Add(readingValue.ValueType);
+
+                output = output + ", '" + readingValue.ValueType + "'";
+
+            }
+        }
+
+        output = output + "],";
+
+
+        foreach (Reading reading in Model.Readings)
+        {
+            outputreadingvalue = outputreadingvalue + reading.Date_time + "'";
+
+            foreach(ReadingValue readingValue in reading.ReadingValues)
+            {
+                outputreadingvalue = outputreadingvalue + ", " + readingValue.Value;
+
+            }
+            outputreadingvalue = outputreadingvalue + "],";
+        }
+        outputreadingvalue = outputreadingvalue.Remove(outputreadingvalue.Length - 1);
+
+
+        output = output + outputreadingvalue;
+
+        return output;
+    }
+
 }
 
-<h1>Details</h1>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+
+            @getdata()
+        ]);
+
+        var options = {
+            title: 'Company Performance',
+            curveType: 'function',
+            legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+    }
+</script>
 
 <div>
-    <h4>Microcontroller</h4>
-    <hr />
+    @getdata()
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.MicrocontrollerName)
@@ -35,6 +91,9 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Readings)
         </dt>
+
+        <div id="curve_chart" style="width: 800px; height: 300px"></div>
+
         <dd class="col-sm-10">
             <table class="table">
                 <tr>
