@@ -8,17 +8,54 @@
 
     string getdata()
     {
+        string header = "['Time'";
+        string values = "['";
+
+        int numberofreadings = Model.Readings.Count;
+
         string output = "['Time'";
         string outputreadingvalue = "['";
         List<string> valueType = new List<string>();
 
+        List<ChartItemHolderModel> ChartItemLists = new List<ChartItemHolderModel>();
 
         foreach (Reading reading in Model.Readings)
         {
-
-
-            foreach(ReadingValue readingValue in reading.ReadingValues)
+            foreach (ReadingValue readingValue in reading.ReadingValues)
             {
+                int? _index = null;
+
+                for (int i = 0; i < ChartItemLists.Count;)
+                {
+                    if (ChartItemLists[i].ValueType == readingValue.ValueType)
+                    {
+                        _index = i;
+                    }
+                    i++;
+                }
+
+                if(_index == null)
+                {
+                    ChartItemModel chartItem = new ChartItemModel();
+                    chartItem.Date_time = reading.Date_time;
+                    chartItem.Value = readingValue.Value;
+                    chartItem.ValueType = readingValue.ValueType;
+
+
+                    ChartItemHolderModel _ChartItemHolder = new ChartItemHolderModel();
+                    _ChartItemHolder.ValueType = chartItem.ValueType;
+                    _ChartItemHolder.ChartItems = new List<ChartItemModel>();
+                    _ChartItemHolder.ChartItems.Add(chartItem);
+                    ChartItemLists.Add(_ChartItemHolder);
+                }
+                else
+                {
+                    ChartItemModel chartItem = new ChartItemModel
+                    { Date_time = reading.Date_time, Value = readingValue.Value, ValueType = readingValue.ValueType };
+                    ChartItemLists[_index ?? default(int)].ValueType = readingValue.ValueType;
+                    ChartItemLists[_index ?? default(int)].ChartItems.Add(chartItem);
+                }
+
                 valueType.Add(readingValue.ValueType);
 
                 output = output + ", '" + readingValue.ValueType + "'";
@@ -29,26 +66,47 @@
         output = output + "],";
 
 
-        foreach (Reading reading in Model.Readings)
+        foreach (ChartItemHolderModel ChartItemList in ChartItemLists)
         {
-            outputreadingvalue = outputreadingvalue + reading.Date_time + "'";
 
-            foreach(ReadingValue readingValue in reading.ReadingValues)
-            {
-                outputreadingvalue = outputreadingvalue + ", " + readingValue.Value;
 
-            }
+
+
+
+            header = header + ", '" + ChartItemList.ValueType + "'";
+
+
+
+            //outputreadingvalue = outputreadingvalue + reading.Date_time + "'";
+
+            // foreach(ReadingValue readingValue in reading.ReadingValues)
+            // {
+            //    outputreadingvalue = outputreadingvalue + ", " + readingValue.Value;
+
+            //}
             outputreadingvalue = outputreadingvalue + "],";
         }
+        header = header + "],";
+
+        foreach (ChartItemHolderModel ChartItemList in ChartItemLists)
+        {
+            //values = values + ", '" + ChartItemList. + "'";
+
+
+        }
+
+
+
+
         outputreadingvalue = outputreadingvalue.Remove(outputreadingvalue.Length - 1);
 
 
         output = output + outputreadingvalue;
 
-        return output;
+        return header;
     }
 
-}
+            }
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
@@ -56,13 +114,33 @@
     google.charts.setOnLoadCallback(drawChart);
 
     function drawChart() {
-        var data = google.visualization.arrayToDataTable([
+            var data = google.visualization.arrayToDataTable([
 
-            @getdata()
-        ]);
 
-        var options = {
-            title: 'Company Performance',
+                ['Time', 'C', 'Procent'],
+
+
+                ['17-05-2020 09:56:46', 24, 20],
+
+
+                ['17-05-2020 09:45:46', 21, 50],
+
+
+                ['17-05-2020 09:36:46', 24, 10],
+
+
+                ['17-05-2020 09:51:46', 31, null],
+
+
+                ['17-05-2020 09:22:46', 27, 70],
+
+
+                ['17-05-2020 09:15:46', 19, 90]
+            ]);
+
+
+            var options = {
+            title: '',
             curveType: 'function',
             legend: { position: 'bottom' }
         };
@@ -101,7 +179,7 @@
                     <th>Values</th>
                 </tr>
                 @foreach (var _reading in Model.Readings)
-                {
+    {
                     <tr>
                         <td>
                             @Html.DisplayFor(model => _reading.Date_time)
@@ -109,10 +187,10 @@
                         <td>
                             @foreach (var _readingvalue in _reading.ReadingValues)
                             {
-                                @Html.DisplayFor(model => _readingvalue.Value)
-                                <text> </text>
-                                @Html.DisplayFor(model => _readingvalue.ValueType)
-                                <br />
+            @Html.DisplayFor(model => _readingvalue.Value)
+            <text> </text>
+            @Html.DisplayFor(model => _readingvalue.ValueType)
+            <br />
                             }
                         </td>
                     </tr>
