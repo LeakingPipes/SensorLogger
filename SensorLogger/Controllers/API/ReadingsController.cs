@@ -25,16 +25,34 @@ namespace SensorLogger.Controllers.API
             _context = context;
         }
 
+        // GET: api/Readings
+        [HttpGet("{id}")]
+        public async Task<Microcontroller> GetAsync(int id, string authKey)
+        {
+            Microcontroller microcontroller = await _context.Microcontrollers
+                .AsNoTracking()
+                .Include(s => s.Readings)
+                .ThenInclude(s => s.ReadingValues)
+                .FirstOrDefaultAsync(m => m.MicrocontrollerID == id);
+
+            if (authKey == microcontroller.APIauthKey)
+            {
+                return microcontroller;
+            }
+
+            return null;
+        }
+
         // POST: api/Readings
-        [HttpPost]
-        public async Task<ActionResult<Reading>> PostReading([FromBody]Reading reading)
+        [HttpPost("{id}")]
+        public async Task<ActionResult<Reading>> PostReading(int ID, string authKey, [FromBody]Reading reading)
         {
             Microcontroller microcontroller = await _context.Microcontrollers
                             .AsNoTracking()
                             .Include(s => s.Readings)
-                            .FirstOrDefaultAsync(m => m.MicrocontrollerID == reading.MicrocontrollerID);
+                            .FirstOrDefaultAsync(m => m.MicrocontrollerID == ID);
 
-            Reading _reading = new Reading { Date_time = DateTime.Now, MicrocontrollerID = reading.MicrocontrollerID, Microcontroller = microcontroller, ReadingValues = reading.ReadingValues };
+            Reading _reading = new Reading { Date_time = DateTime.Now, MicrocontrollerID = ID, Microcontroller = microcontroller, ReadingValues = reading.ReadingValues };
 
             _reading.Microcontroller = microcontroller;
 
@@ -54,7 +72,7 @@ namespace SensorLogger.Controllers.API
             }
             catch (DbUpdateException)
             {
-                if (ReadingExists(reading.ReadingID))
+                if (ReadingExists(ID))
                 {
                     return Conflict();
                 }
@@ -64,7 +82,12 @@ namespace SensorLogger.Controllers.API
                 }
             }
 
-            return CreatedAtAction("GetReading", new { id = reading.ReadingID }, reading);
+            if (authKey == microcontroller.APIauthKey)
+            {
+                return CreatedAtAction("GetReading", new { id = ID }, reading);
+            }
+
+            return null;
         }
 
         private bool ReadingExists(int id)

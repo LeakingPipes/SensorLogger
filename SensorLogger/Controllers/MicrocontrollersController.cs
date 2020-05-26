@@ -8,16 +8,19 @@ using Microsoft.EntityFrameworkCore;
 using SensorLogger.Data;
 using SensorLogger.Models;
 using System.Security.Claims;
+using System.Security.Cryptography;
 
 namespace SensorLogger.Views.Microcontrollers
 {
     public class MicrocontrollersController : Controller
     {
         private readonly SensorLoggerContext _context;
+        private readonly IHashData hashData;
 
-        public MicrocontrollersController(SensorLoggerContext context)
+        public MicrocontrollersController(SensorLoggerContext context, IHashData hashData)
         {
             _context = context;
+            this.hashData = hashData;
         }
 
         // GET: Microcontrollers
@@ -66,6 +69,7 @@ namespace SensorLogger.Views.Microcontrollers
                 case "private_desc":
                     sort_microcontrollers = sort_microcontrollers.OrderByDescending(s => s.isPrivate);
                     break;
+                    //Denne dele er ikke særligt godt lavet men det virker, jeg ender nok med at lave det om.
                 case "Date":
                     List<Microcontroller> _sort_microcontrollers1 = new List<Microcontroller>();
                     List<Microcontroller> null_sort_microcontrollers1 = new List<Microcontroller>();
@@ -155,9 +159,20 @@ namespace SensorLogger.Views.Microcontrollers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MicrocontrollerID,MicrocontrollerName")] Microcontroller microcontroller)
         {
-            int userid = Convert.ToInt32(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            microcontroller.UserID = Convert.ToInt32(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-            microcontroller.UserID = userid;
+            using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
+            {
+                byte[] val = new byte[4];
+                rng.GetBytes(val);
+
+                int value = BitConverter.ToInt32(val, 0);
+
+                string _AuthKey = hashData.ComputeHashSha512(value.ToString(), microcontroller.UserID.ToString());
+                _AuthKey = _AuthKey.Substring(0, 12);
+                microcontroller.APIauthKey = _AuthKey;
+            }
+
 
             if (ModelState.IsValid)
             {
@@ -277,6 +292,55 @@ namespace SensorLogger.Views.Microcontrollers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        // GET: Microcontrollers/Delete/5
+        public async Task<IActionResult> DeleteReading(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var reading = await _context.Readings
+                .Include(r => r.ReadingValues)
+                .FirstOrDefaultAsync(m => m.ReadingID == id);
+
+            if (reading == null)
+            {
+                return NotFound();
+            }
+
+            string role = this.User.FindFirstValue(ClaimTypes.Role);
+            int userid = Convert.ToInt32(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            if (role != Role.Admin.ToString() && userid != reading.Microcontroller.UserID)
+            {
+                return Unauthorized();
+            }
+
+            return View(reading);
+        }
+
+        // POST: Microcontrollers/Delete/5
+        [HttpPost, ActionName("DeleteReading")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ReadingDeleteConfirmed(int id)
+        {
+            var reading = await _context.Readings.FindAsync(id);
+            _context.Readings.Remove(reading);
+
+            string role = this.User.FindFirstValue(ClaimTypes.Role);
+            int userid = Convert.ToInt32(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            if (role != Role.Admin.ToString() && userid != reading.Microcontroller.UserID)
+            {
+                return Unauthorized();
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
 
         private bool MicrocontrollerExists(int id)
         {

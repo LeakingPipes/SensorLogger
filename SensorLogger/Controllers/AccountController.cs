@@ -43,7 +43,7 @@ namespace SensorLogger.Controllers
             {
                 string _password = hashData.ComputeHashSha512(model.Password, model.Username);
 
-                User user = new User { Name = model.Username, Password = _password, Role = Role.Admin };
+                User user = new User { Name = model.Username, Password = _password, Role = Role.User };
 
                 context.Add(user);
                 await context.SaveChangesAsync();

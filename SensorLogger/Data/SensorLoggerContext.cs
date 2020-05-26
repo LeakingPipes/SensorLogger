@@ -13,6 +13,8 @@ namespace SensorLogger.Data
         public DbSet<Microcontroller> Microcontrollers { get; set; }
         public DbSet<Reading> Readings { get; set; }
         public DbSet<ReadingValue> ReadingValues { get; set; }
+        public DbSet<Board> Boards { get; set; }
+        public DbSet<Component> Components { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -20,6 +22,8 @@ namespace SensorLogger.Data
             modelBuilder.Entity<Microcontroller>().ToTable("Microcontroller");
             modelBuilder.Entity<Reading>().ToTable("Reading");
             modelBuilder.Entity<ReadingValue>().ToTable("ReadingValue");
+            modelBuilder.Entity<Board>().ToTable("Board");
+            modelBuilder.Entity<Component>().ToTable("Component");
         }
     }
 }

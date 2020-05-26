@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Microcontrollers</h1>
 
 <p>
     <a asp-action="Create">Add New</a>
@@ -32,45 +32,46 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.MicrocontrollerID">
-                    @Html.DisplayFor(modelItem => item.MicrocontrollerName)
-                </a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.isPrivate)
-            </td>
-            <td>
-                @if (item.Readings.Count != 0)
-                {
-                    @Html.DisplayFor(modelItem => item.Readings.Last<Reading>().Date_time)
-                }
-                else
-                {
-                    <text>No readings</text>
-                }
-            </td>
-            <td>
-                @if (item.Readings.Count != 0)
-                {
-                    @foreach (var _lastvalue in item.Readings.Last<Reading>().ReadingValues)
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.MicrocontrollerID">
+                        @Html.DisplayFor(modelItem => item.MicrocontrollerName)
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.isPrivate)
+                </td>
+                <td>
+                    @if (item.Readings.Count != 0)
                     {
-                        @Html.DisplayFor(modelItem => _lastvalue.Value)
-                        <text> </text>
-                        @Html.DisplayFor(modelItem => _lastvalue.ValueType)
-                        <br />
+                        @Html.DisplayFor(modelItem => item.Readings.Last<Reading>().Date_time)
                     }
-                }
-            </td>
-            <td>
-                <a asp-action="Delete" asp-route-id="@item.MicrocontrollerID">Delete</a>
-            </td>
-        </tr>
-}
+                    else
+                    {
+                        <text>No readings</text>
+                    }
+                </td>
+                <td>
+                    @if (item.Readings.Count != 0)
+                    {
+                        @foreach (var _lastvalue in item.Readings.Last<Reading>().ReadingValues)
+                        {
+                            @Html.DisplayFor(modelItem => _lastvalue.Value)
+                            <text> </text>
+                            @Html.DisplayFor(modelItem => _lastvalue.ValueType)
+                            <br />
+                        }
+                    }
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.MicrocontrollerID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

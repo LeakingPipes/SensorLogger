@@ -13,6 +13,8 @@ namespace SensorLogger.Models
         public int MicrocontrollerID { get; set; }
         public string MicrocontrollerName { get; set; }
 
+        public string APIauthKey { get; set; }
+
         public bool isPrivate { get; set; }
 
         [ForeignKey("UserID")]

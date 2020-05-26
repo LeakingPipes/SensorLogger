@@ -4,155 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-@functions {
-
-    string getdata()
-    {
-        string header = "['Time'";
-        string values = "['";
-
-        int numberofreadings = Model.Readings.Count;
-
-        string output = "['Time'";
-        string outputreadingvalue = "['";
-        List<string> valueType = new List<string>();
-
-        List<ChartItemHolderModel> ChartItemLists = new List<ChartItemHolderModel>();
-
-        foreach (Reading reading in Model.Readings)
-        {
-            foreach (ReadingValue readingValue in reading.ReadingValues)
-            {
-                int? _index = null;
-
-                for (int i = 0; i < ChartItemLists.Count;)
-                {
-                    if (ChartItemLists[i].ValueType == readingValue.ValueType)
-                    {
-                        _index = i;
-                    }
-                    i++;
-                }
-
-                if(_index == null)
-                {
-                    ChartItemModel chartItem = new ChartItemModel();
-                    chartItem.Date_time = reading.Date_time;
-                    chartItem.Value = readingValue.Value;
-                    chartItem.ValueType = readingValue.ValueType;
-
-
-                    ChartItemHolderModel _ChartItemHolder = new ChartItemHolderModel();
-                    _ChartItemHolder.ValueType = chartItem.ValueType;
-                    _ChartItemHolder.ChartItems = new List<ChartItemModel>();
-                    _ChartItemHolder.ChartItems.Add(chartItem);
-                    ChartItemLists.Add(_ChartItemHolder);
-                }
-                else
-                {
-                    ChartItemModel chartItem = new ChartItemModel
-                    { Date_time = reading.Date_time, Value = readingValue.Value, ValueType = readingValue.ValueType };
-                    ChartItemLists[_index ?? default(int)].ValueType = readingValue.ValueType;
-                    ChartItemLists[_index ?? default(int)].ChartItems.Add(chartItem);
-                }
-
-                valueType.Add(readingValue.ValueType);
-
-                output = output + ", '" + readingValue.ValueType + "'";
-
-            }
-        }
-
-        output = output + "],";
-
-
-        foreach (ChartItemHolderModel ChartItemList in ChartItemLists)
-        {
-
-
-
-
-
-            header = header + ", '" + ChartItemList.ValueType + "'";
-
-
-
-            //outputreadingvalue = outputreadingvalue + reading.Date_time + "'";
-
-            // foreach(ReadingValue readingValue in reading.ReadingValues)
-            // {
-            //    outputreadingvalue = outputreadingvalue + ", " + readingValue.Value;
-
-            //}
-            outputreadingvalue = outputreadingvalue + "],";
-        }
-        header = header + "],";
-
-        foreach (ChartItemHolderModel ChartItemList in ChartItemLists)
-        {
-            //values = values + ", '" + ChartItemList. + "'";
-
-
-        }
-
-
-
-
-        outputreadingvalue = outputreadingvalue.Remove(outputreadingvalue.Length - 1);
-
-
-        output = output + outputreadingvalue;
-
-        return header;
-    }
-
-            }
-
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-    google.charts.load('current', { 'packages': ['corechart'] });
-    google.charts.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-
-
-                ['Time', 'C', 'Procent'],
-
-
-                ['17-05-2020 09:56:46', 24, 20],
-
-
-                ['17-05-2020 09:45:46', 21, 50],
-
-
-                ['17-05-2020 09:36:46', 24, 10],
-
-
-                ['17-05-2020 09:51:46', 31, null],
-
-
-                ['17-05-2020 09:22:46', 27, 70],
-
-
-                ['17-05-2020 09:15:46', 19, 90]
-            ]);
-
-
-            var options = {
-            title: '',
-            curveType: 'function',
-            legend: { position: 'bottom' }
-        };
-
-        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-
-        chart.draw(data, options);
-    }
-</script>
-
 <div>
-    @getdata()
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.MicrocontrollerName)
@@ -161,25 +13,31 @@
             @Html.DisplayFor(model => model.MicrocontrollerName)
         </dd>
         <dt class="col-sm-2">
-            API URL
+            API Readings URL
         </dt>
         <dd class="col-sm-10">
-            <p>https://localhost:44396/api/microcontroller?id=@Html.DisplayFor(model => model.MicrocontrollerID)</p>
+            https://localhost:44396/api/Readings/@Html.DisplayFor(model => model.MicrocontrollerID)?authKey=@Html.DisplayFor(model => model.APIauthKey)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.APIauthKey)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.APIauthKey)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Readings)
         </dt>
 
-        <div id="curve_chart" style="width: 800px; height: 300px"></div>
 
         <dd class="col-sm-10">
             <table class="table">
                 <tr>
                     <th>Date and time</th>
                     <th>Values</th>
+                    <th></th>
                 </tr>
                 @foreach (var _reading in Model.Readings)
-    {
+                {
                     <tr>
                         <td>
                             @Html.DisplayFor(model => _reading.Date_time)
@@ -187,11 +45,14 @@
                         <td>
                             @foreach (var _readingvalue in _reading.ReadingValues)
                             {
-            @Html.DisplayFor(model => _readingvalue.Value)
-            <text> </text>
-            @Html.DisplayFor(model => _readingvalue.ValueType)
-            <br />
+                                @Html.DisplayFor(model => _readingvalue.Value)
+                                <text> </text>
+                                @Html.DisplayFor(model => _readingvalue.ValueType)
+                                <br />
                             }
+                        </td>
+                        <td>
+                            <a asp-action="DeleteReading" asp-route-id="@_reading.ReadingID">Delete</a>
                         </td>
                     </tr>
                 }

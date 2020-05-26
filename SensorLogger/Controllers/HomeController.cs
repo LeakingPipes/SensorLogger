@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SensorLogger.Data;
 using SensorLogger.Models;
 
 namespace SensorLogger.Controllers
@@ -12,9 +14,31 @@ namespace SensorLogger.Controllers
     [AllowAnonymous]
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly SensorLoggerContext _context;
+
+        public HomeController(SensorLoggerContext context)
         {
-            return View();
+            _context = context;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var users = await _context.Users.AsNoTracking().ToListAsync();
+            var microcontrollers = await _context.Microcontrollers.AsNoTracking().ToListAsync();
+            var readings = await _context.Readings.AsNoTracking().ToListAsync();
+
+            int userNum = users.Count;
+            int microcontrollerNum = microcontrollers.Count;
+            int readingNum = readings.Count;
+
+            HomeModel homeModel = new HomeModel
+            {
+                numberOfUsers = userNum,
+                numberOfMicrocontrollers = microcontrollerNum,
+                numberOfReadings = readingNum
+            };
+
+            return View(homeModel);
         }
 
         public IActionResult Privacy()

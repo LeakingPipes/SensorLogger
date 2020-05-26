@@ -1,0 +1,76 @@
+﻿@model SensorLogger.Models.HardwareModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+<div style="float:left; width:50%; padding:6px;">
+    <h4>Boards</h4>
+    <a asp-action="CreateBoard">Add New</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <text>ID</text>
+                </th>
+                <th>
+                    <text>Name</text>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.boards)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BoardID)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.BoardID">
+                            @Html.DisplayFor(modelItem => item.BoardName)
+                        </a>
+                    </td>
+                    <td>
+                        <a asp-action="Delete" asp-route-id="@item.BoardID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div style="float:right; width:50%; padding:6px;">
+    <h4>Components</h4>
+    <a asp-action="CreateComponent">Add New</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <text>ID</text>
+                </th>
+                <th>
+                    <text>Name</text>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.components)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ComponentID)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.ComponentID">
+                            @Html.DisplayFor(modelItem => item.ComponentName)
+                        </a>
+                    </td>
+                    <td>
+                        <a asp-action="Delete" asp-route-id="@item.ComponentID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -80,3 +80,8 @@ C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2
 C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Users\Edit.g.cshtml.cs
 C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Users\Index.g.cshtml.cs
 C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Users\Unauthorized.g.cshtml.cs
+C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\CodeGenerator\Index.g.cshtml.cs
+C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Hardware\Index.g.cshtml.cs
+C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Hardware\CreateBoard.g.cshtml.cs
+C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Hardware\CreateComponent.g.cshtml.cs
+C:\Users\Mads\Documents\GitHub\SensorLogger\SensorLogger\obj\Debug\netcoreapp2.2\Razor\Views\Microcontrollers\DeleteReading.g.cshtml.cs
